@@ -13,13 +13,13 @@ def pytest_addoption(parser):
         "--browser", action="store", default="chrome", help="browser for tests"
     )
     parser.addoption("--bv", action="store", help="browser version")
-    parser.addoption("--headless", action="store_true")
     parser.addoption(
-        "--mode",
+        "--headless",
         action="store",
-        default="local",
-        help="by default local mode, 'remote' - remote mode",
+        default=None,
+        help="enable/disable headless mode: 'true' or 'false'",
     )
+    parser.addoption("--remote", action="store_true", help="use for remote launching")
     parser.addoption("--url", action="store", default=default_url)
     parser.addoption("--vnc", action="store_true")
     parser.addoption("--executor", action="store", default=default_executor)
@@ -35,10 +35,12 @@ def browser(request):
     logger.info("===> Test started at %s" % datetime.datetime.now())
     logger.info("===> Test name: %s" % request.node.name)
 
-    mode = request.config.getoption("mode")
+    remote = request.config.getoption("remote")
+
     browser_name = request.config.getoption("browser")
-    headless = request.config.getoption("headless")  # True - False
+    headless = request.config.getoption("headless")
     browser_version = request.config.getoption("bv")
+
     vnc = request.config.getoption("vnc")
     executor = request.config.getoption("executor")
     executor_url = f"http://{executor}:4444/wd/hub"
@@ -46,7 +48,10 @@ def browser(request):
     options = None
     driver = None
 
-    if mode == "remote":
+    if headless is not None:
+        headless = headless.lower() == "true"
+
+    if remote == "remote":
         if browser_name in ["chrome", "ch"]:
             options = webdriver.ChromeOptions()
         elif browser_name in ["firefox", "ff"]:
@@ -64,20 +69,35 @@ def browser(request):
     else:
         if browser_name in ["chrome", "ch"]:
             options = webdriver.ChromeOptions()
-            if headless:
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+
+            if headless or headless is None:  # True by default
                 options.add_argument("--headless=new")
+                options.add_argument("--window-size=1920,1080")
 
             driver = webdriver.Chrome(options=options)
 
         elif browser_name in ["firefox", "ff"]:
             options = webdriver.FirefoxOptions()
-            if headless:
-                options.add_argument("-headless")
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+
+            if headless or headless is None:  # True by default
+                options.add_argument("--headless")
+                options.add_argument("--window-size=1920,1080")
+
             driver = webdriver.Firefox(options=options)
+
         elif browser_name in ["edge", "ed"]:
             options = webdriver.EdgeOptions()
-            if headless:
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+
+            if headless or headless is None:  # True by default
                 options.add_argument("--headless=new")
+                options.add_argument("--window-size=1920,1080")
+
             driver = webdriver.Edge(options=options)
 
     driver.maximize_window()
