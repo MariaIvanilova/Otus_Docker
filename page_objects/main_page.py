@@ -58,7 +58,7 @@ class MainPage(BasePage):
     @allure.step("Получить цену продукта")
     def main_get_price(self):
         self.wait_title("Your Store")
-        self.wait_element(self.PRICE, timeout=3)
+        self.wait_element(self.PRICE)
         return self.get_text(self.PRICE)
 
     @allure.step("Изменить валюту")

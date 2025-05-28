@@ -1,6 +1,6 @@
 import allure
 from selenium.webdriver.common.by import By
-from base_page import BasePage
+from page_objects.base_page import BasePage
 from element_objects.header import HeaderElement
 
 
@@ -32,8 +32,7 @@ class CatalogPage(BasePage):
     @allure.step("Получить цену продукта")
     def catalog_get_price(self):
         self.wait_title("Desktops")
-        # self.browser.refresh()
-        self.wait_element(self.PRICE, timeout=3)
+        self.wait_element(self.PRICE)
         return self.get_text(self.PRICE)
 
     @allure.step("Поменять валюту")

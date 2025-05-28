@@ -1,6 +1,6 @@
 import allure
 from selenium.webdriver.common.by import By
-from base_page import BasePage
+from page_objects.base_page import BasePage
 
 
 class ProductsPage(BasePage):
@@ -28,7 +28,7 @@ class ProductsPage(BasePage):
     def products_click_add_new_item(self):
         self.wait_element(self.ADD_NEW_PRODUCT)
         self.click_to_element(self.ADD_NEW_PRODUCT)
-        self.wait_element(self.HEADER_ADD_PRODUCT, timeout=2)
+        self.wait_element(self.HEADER_ADD_PRODUCT)
         return self.get_text(self.HEADER_ADD_PRODUCT)
 
     @allure.step("Добавить новый продукт")
@@ -60,5 +60,5 @@ class ProductsPage(BasePage):
     def products_delete_product(self):
         self.click_to_element(self.DELETE_BUTTON)
         self.alert_confirm()
-        self.wait_text(self.LIST, "No results!", timeout=2)
+        self.wait_text(self.LIST, "No results!")
         return self.get_text(self.LIST)
