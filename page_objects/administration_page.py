@@ -44,6 +44,16 @@ class AdministrationPage(BasePage):
 
     @allure.step("В меню выбрать Products")
     def administration_go_to_product_page(self):
-        self.click_to_element(self.CATALOG)
+
+        assert self.browser.find_element(*self.CATALOG).is_displayed()
+
+        is_expanded = (
+            self.browser.find_element(*self.CATALOG).get_attribute("aria-expanded")
+            == "true"
+        )
+
+        if not is_expanded:
+            self.click_to_element(self.CATALOG)
+
         self.wait_element(self.PRODUCTS)
         self.click_to_element(self.PRODUCTS)

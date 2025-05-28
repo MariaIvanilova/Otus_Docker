@@ -19,10 +19,19 @@ def pytest_addoption(parser):
         default=None,
         help="enable/disable headless mode: 'true' or 'false'",
     )
-    parser.addoption("--remote", action="store_true", help="use for remote launching")
+    parser.addoption(
+        "--remote", action="store_true", help="use '--remote' for remote launching"
+    )
     parser.addoption("--url", action="store", default=default_url)
     parser.addoption("--vnc", action="store_true")
     parser.addoption("--executor", action="store", default=default_executor)
+
+
+def additional_option(options):
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument('--disable-gpu')
+    options.add_argument("--window-size=1920,1080")
 
 
 @pytest.fixture
@@ -51,7 +60,7 @@ def browser(request):
     if headless is not None:
         headless = headless.lower() == "true"
 
-    if remote == "remote":
+    if remote:
         if browser_name in ["chrome", "ch"]:
             options = webdriver.ChromeOptions()
         elif browser_name in ["firefox", "ff"]:
@@ -69,34 +78,28 @@ def browser(request):
     else:
         if browser_name in ["chrome", "ch"]:
             options = webdriver.ChromeOptions()
-            options.add_argument("--no-sandbox")
-            options.add_argument("--disable-dev-shm-usage")
+            additional_option(options)
 
             if headless or headless is None:  # True by default
                 options.add_argument("--headless=new")
-                options.add_argument("--window-size=1920,1080")
 
             driver = webdriver.Chrome(options=options)
 
         elif browser_name in ["firefox", "ff"]:
             options = webdriver.FirefoxOptions()
-            options.add_argument("--no-sandbox")
-            options.add_argument("--disable-dev-shm-usage")
+            additional_option(options)
 
             if headless or headless is None:  # True by default
                 options.add_argument("--headless")
-                options.add_argument("--window-size=1920,1080")
 
             driver = webdriver.Firefox(options=options)
 
         elif browser_name in ["edge", "ed"]:
             options = webdriver.EdgeOptions()
-            options.add_argument("--no-sandbox")
-            options.add_argument("--disable-dev-shm-usage")
+            additional_option(options)
 
             if headless or headless is None:  # True by default
                 options.add_argument("--headless=new")
-                options.add_argument("--window-size=1920,1080")
 
             driver = webdriver.Edge(options=options)
 
