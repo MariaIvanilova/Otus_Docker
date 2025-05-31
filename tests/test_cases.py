@@ -7,7 +7,7 @@ from page_objects.main_page import MainPage
 
 @allure.title("Страница 'Administration'. Тест логин и выход из аккаунта")
 def test_administration_login_logout(browser, url):
-    administration_url = url + "administration"
+    administration_url = url + "/administration"
     administration_page = AdministrationPage(browser, url=administration_url)
     administration_page.open_page()
     assert administration_page.administration_login(), (
@@ -46,7 +46,7 @@ def test_main_page_change_currency(browser, url):
 
 @allure.title("Тест изменения цены при изменении валюты на странице каталога")
 def test_catalog_page_change_currency(browser, url):
-    catalog_url = url + "catalog/desktops"
+    catalog_url = url + "/catalog/desktops"
     catalog_page = CatalogPage(browser, url=catalog_url)
 
     catalog_page.open_page()

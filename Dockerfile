@@ -3,10 +3,13 @@ FROM python:3.10-slim
 # Установка зависимостей
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+    bash \
     wget \
     gnupg \
     curl \
+    netcat-traditional\
     && rm -rf /var/lib/apt/lists/*
+
 
 # Устанавливаем Chrome браузер
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
@@ -31,6 +34,8 @@ RUN apt-get update && \
     firefox-esr \
     && rm -rf /var/lib/apt/lists/*
 
+# RUN apt-get update && apt-get install -y --no-install-recommends netcat-traditional
+
 # Рабочая директория
 WORKDIR /app
 
@@ -42,6 +47,8 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Копируем код
 COPY . .
 
+RUN chmod +x wait-for-it.sh
+
 # Запуск тестов
-ENTRYPOINT ["python", "-m", "pytest"]
+# ENTRYPOINT ["python", "-m", "pytest"]
 CMD []
