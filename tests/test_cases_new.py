@@ -1,4 +1,5 @@
 import allure
+import pytest
 
 from element_objects.header import HeaderElement
 from page_objects.administration_page import AdministrationPage
@@ -10,8 +11,9 @@ test_product = "Test"
 
 
 @allure.title("Тест добавление нового продукта")
+@pytest.mark.order(1)
 def test_administration_add_new_product(browser, url):
-    administration_url = url + "administration"
+    administration_url = url + "/administration"
     administration_page = AdministrationPage(browser, url=administration_url)
     administration_page.open_page()
     administration_page.administration_login()
@@ -32,8 +34,9 @@ def test_administration_add_new_product(browser, url):
 
 
 @allure.title("Тест удаление добавленного продукта")
+@pytest.mark.order(2)
 def test_administration_delete_product(browser, url):
-    administration_url = url + "administration"
+    administration_url = url + "/administration"
     administration_page = AdministrationPage(browser, url=administration_url)
     administration_page.open_page()
     administration_page.administration_login()

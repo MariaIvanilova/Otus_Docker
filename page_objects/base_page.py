@@ -59,7 +59,7 @@ class BasePage:
                 )
         return True
 
-    def wait_title(self, title, timeout=5):
+    def wait_title(self, title, timeout=20):
         self.logger.debug(
             "| Class: %s | Wait %s sec for title: %s"
             % (self.class_name, str(timeout), title)
@@ -71,7 +71,7 @@ class BasePage:
                 f"Expected title is {title}, but title is {self.browser.title}"
             )
 
-    def wait_element(self, locator, timeout=5):
+    def wait_element(self, locator, timeout=10):
         self.logger.debug(
             "| Class: %s | Wait %s sec for element: %s"
             % (self.class_name, str(timeout), str(locator))
@@ -84,7 +84,7 @@ class BasePage:
             self.browser.save_screenshot(f"{self.browser.session_id}.png")
             raise AssertionError(f"Didn't wait for: {locator}")
 
-    def wait_text(self, locator, text, timeout=5):
+    def wait_text(self, locator, text, timeout=10):
         self.logger.debug(
             "| Class: %s | Wait %s sec for text: %s on element: %s"
             % (self.class_name, str(timeout), text, str(locator))

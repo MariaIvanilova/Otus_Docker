@@ -3,7 +3,7 @@ import datetime
 from selenium import webdriver
 import logging
 
-default_url = "http://192.168.100.20:8081/"
+default_url = "http://192.168.100.20:8081"
 default_executor = "192.168.100.20"
 log_level = "DEBUG"
 
@@ -30,7 +30,7 @@ def pytest_addoption(parser):
 def additional_option(options):
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    options.add_argument('--disable-gpu')
+    options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920,1080")
 
 
