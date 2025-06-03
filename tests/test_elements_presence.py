@@ -16,7 +16,7 @@ def test_main_page_elements(browser, url):
 
 @allure.title("Проверка наличия элементов на странице: catalog/desktops")
 def test_catalog_desktop_elements(browser, url):
-    catalog_url = url + "catalog/desktops"
+    catalog_url = url + "/catalog/desktops"
     catalog_page = CatalogPage(browser, url=catalog_url)
     catalog_page.open_page()
     assert catalog_page.catalog_desktops_elements()
@@ -26,7 +26,7 @@ def test_catalog_desktop_elements(browser, url):
     "Проверка наличия элементов на странице продукта: product/tablet/samsung-galaxy-tab-10-1"
 )
 def test_product_elements(browser, url):
-    product_url = url + "product/tablet/samsung-galaxy-tab-10-1"
+    product_url = url + "/product/tablet/samsung-galaxy-tab-10-1"
     product_page = ProductPage(browser, url=product_url)
     product_page.open_page()
     assert product_page.product_page_elements()
@@ -34,7 +34,7 @@ def test_product_elements(browser, url):
 
 @allure.title("Проверка наличия элементов на странице Administration")
 def test_administration_elements(browser, url):
-    administration_url = url + "administration"
+    administration_url = url + "/administration"
     administration_page = AdministrationPage(browser, url=administration_url)
     administration_page.open_page()
     assert administration_page.administration_elements()
