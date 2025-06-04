@@ -5,7 +5,7 @@ set -e
 host="$1"
 port="$2"
 shift 2
-
+cmd="$*"
 
 # Wait for the port to become available
 until nc -z "$host" "$port"; do
@@ -13,5 +13,8 @@ until nc -z "$host" "$port"; do
   sleep 1
 done
 
->&2 echo "$host:$port is available"
+>&2 echo "$host:$port is available, executing command: $cmd"
+# shellcheck disable=SC2086
+# exec $cmd
+# exec "$@"
 sh -c "$@"

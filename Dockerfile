@@ -34,7 +34,7 @@ RUN apt-get update && \
     firefox-esr \
     && rm -rf /var/lib/apt/lists/*
 
-# RUN apt-get update && apt-get install -y --no-install-recommends netcat-traditional
+RUN apt-get update && apt-get install -y --no-install-recommends netcat-traditional
 
 # Рабочая директория
 WORKDIR /app

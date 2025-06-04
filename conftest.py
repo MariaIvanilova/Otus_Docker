@@ -3,8 +3,8 @@ import datetime
 from selenium import webdriver
 import logging
 
-default_url = "http://192.168.100.20:8081"
-default_executor = "192.168.100.20"
+default_url = "http://192.168.100.9:8085"
+default_executor = "192.168.100.9"
 log_level = "DEBUG"
 
 

@@ -42,7 +42,7 @@ services:
     image: opencart-tests
     command: >
       ./wait-for-it.sh opencart 8080
-      "python -m pytest ./tests
+      "python -m pytest
         --url http://opencart:8080
         --browser ff
         --bv 125.0
