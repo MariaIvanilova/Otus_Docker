@@ -53,6 +53,7 @@ class AdministrationPage(BasePage):
 
         if not is_expanded:
             self.click_to_element(self.CATALOG)
+            # self.action_chains_click(self.CATALOG)
 
         self.wait_element(self.PRODUCTS)
         self.click_to_element(self.PRODUCTS)
