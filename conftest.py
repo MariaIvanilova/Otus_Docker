@@ -45,7 +45,6 @@ def browser(request):
     logger.info("===> Test name: %s" % request.node.name)
 
     remote = request.config.getoption("remote")
-
     browser_name = request.config.getoption("browser")
     headless = request.config.getoption("headless")
     browser_version = request.config.getoption("bv")
@@ -56,72 +55,57 @@ def browser(request):
     executor = request.config.getoption("executor")
     executor_url = f"http://{executor}:4444/wd/hub"
 
+    driver = None
     options = None
-    # driver = None
 
-    if headless is not None:
-        headless = headless.lower() == "true"
+    try:
+        if remote:
+            if browser_name in ["chrome", "ch"]:
+                options = webdriver.ChromeOptions()
+            elif browser_name in ["firefox", "ff"]:
+                options = webdriver.FirefoxOptions()
+            elif browser_name in ["edge", "ed"]:
+                options = webdriver.EdgeOptions()
 
-    if remote:
-        if browser_name in ["chrome", "ch"]:
-            options = webdriver.ChromeOptions()
-        elif browser_name in ["firefox", "ff"]:
-            options = webdriver.FirefoxOptions()
-        elif browser_name in ["edge", "ed"]:
-            options = webdriver.EdgeOptions()
+            if options:
+                options.set_capability("browserVersion", browser_version)
+                options.set_capability("selenoid:options", {"name": request.node.name})
+                if vnc:
+                    options.set_capability("selenoid:options", {"enableVNC": True})
+                driver = webdriver.Remote(command_executor=executor_url, options=options)
 
-        options.set_capability("browserVersion", browser_version)
-        options.set_capability("selenoid:options", {"name": request.node.name})
-        if vnc:
-            options.set_capability("selenoid:options", {"enableVNC": True})
+        else:
+            if browser_name in ["chrome", "ch"]:
+                options = webdriver.ChromeOptions()
+                additional_option(options)
+                if headless or headless is None:
+                    options.add_argument("--headless=new")
+                driver = webdriver.Chrome(options=options)
 
-        driver = webdriver.Remote(command_executor=executor_url, options=options)
+            elif browser_name in ["firefox", "ff"]:
+                options = webdriver.FirefoxOptions()
+                additional_option(options)
+                if headless or headless is None:
+                    options.add_argument("--headless")
+                driver = webdriver.Firefox(options=options)
+
+            elif browser_name in ["edge", "ed"]:
+                options = webdriver.EdgeOptions()
+                additional_option(options)
+                if headless or headless is None:
+                    options.add_argument("--headless=new")
+                driver = webdriver.Edge(options=options)
+
+        if driver is None:
+            raise ValueError(f"Unsupported browser: {browser_name}")
+
         driver.maximize_window()
-        driver.logger = logger
-        yield driver
-        driver.quit()
+        driver.logger = logger  # Добавляем logger к драйверу
+        return driver
 
-    else:
-        if browser_name in ["chrome", "ch"]:
-            options = webdriver.ChromeOptions()
-            additional_option(options)
-
-            if headless or headless is None:  # True by default
-                options.add_argument("--headless=new")
-
-            driver = webdriver.Chrome(options=options)
-            driver.maximize_window()
-            driver.logger = logger
-            yield driver
-            driver.quit()
-
-        elif browser_name in ["firefox", "ff"]:
-            options = webdriver.FirefoxOptions()
-            additional_option(options)
-
-            if headless or headless is None:  # True by default
-                options.add_argument("--headless")
-
-            driver = webdriver.Firefox(options=options)
-            driver.maximize_window()
-            driver.logger = logger
-            yield driver
-            driver.quit()
-
-        elif browser_name in ["edge", "ed"]:
-            options = webdriver.EdgeOptions()
-            additional_option(options)
-
-            if headless or headless is None:  # True by default
-                options.add_argument("--headless=new")
-
-            driver = webdriver.Edge(options=options)
-            driver.maximize_window()
-            driver.logger = logger
-            yield driver
-            driver.quit()
-
-    # driver.maximize_window()
+    except Exception as e:
+        logger.error(f"Failed to initialize browser: {e}")
+        raise
 
 
 @pytest.fixture
