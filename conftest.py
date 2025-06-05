@@ -57,7 +57,7 @@ def browser(request):
     executor_url = f"http://{executor}:4444/wd/hub"
 
     options = None
-    driver = None
+    # driver = None
 
     if headless is not None:
         headless = headless.lower() == "true"
