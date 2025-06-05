@@ -20,7 +20,7 @@ def pytest_addoption(parser):
         help="enable/disable headless mode: 'true' or 'false'",
     )
     parser.addoption(
-        "--remote", action="store_true", help="use '--remote' for remote launching"
+        "--remote", action="store_true", help="remote launching by default"
     )
     parser.addoption("--url", action="store", default=default_url)
     parser.addoption("--vnc", action="store_true")
@@ -76,6 +76,10 @@ def browser(request):
             options.set_capability("selenoid:options", {"enableVNC": True})
 
         driver = webdriver.Remote(command_executor=executor_url, options=options)
+        driver.maximize_window()
+        driver.logger = logger
+        yield driver
+        driver.quit()
 
     else:
         if browser_name in ["chrome", "ch"]:
@@ -86,6 +90,10 @@ def browser(request):
                 options.add_argument("--headless=new")
 
             driver = webdriver.Chrome(options=options)
+            driver.maximize_window()
+            driver.logger = logger
+            yield driver
+            driver.quit()
 
         elif browser_name in ["firefox", "ff"]:
             options = webdriver.FirefoxOptions()
@@ -95,6 +103,10 @@ def browser(request):
                 options.add_argument("--headless")
 
             driver = webdriver.Firefox(options=options)
+            driver.maximize_window()
+            driver.logger = logger
+            yield driver
+            driver.quit()
 
         elif browser_name in ["edge", "ed"]:
             options = webdriver.EdgeOptions()
@@ -104,13 +116,12 @@ def browser(request):
                 options.add_argument("--headless=new")
 
             driver = webdriver.Edge(options=options)
+            driver.maximize_window()
+            driver.logger = logger
+            yield driver
+            driver.quit()
 
-    driver.maximize_window()
-
-    driver.logger = logger
-
-    yield driver
-    driver.quit()
+    # driver.maximize_window()
 
 
 @pytest.fixture
