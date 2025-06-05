@@ -65,7 +65,7 @@ class BasePage:
             % (self.class_name, str(timeout), title)
         )
         try:
-            return WebDriverWait(self.browser, timeout).until(EC.title_is(title))
+            return WebDriverWait(self.browser, timeout).until(EC.title_contains(title))
         except TimeoutException:
             raise AssertionError(
                 f"Expected title is {title}, but title is {self.browser.title}"

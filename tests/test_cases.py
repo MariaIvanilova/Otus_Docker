@@ -13,6 +13,7 @@ def test_administration_login_logout(browser, url):
     assert administration_page.administration_login(), (
         f"login should be successful - logout button should be present"
     )
+
     assert administration_page.administration_logout(), (
         f"Expected action: after logout - go to Administration page"
     )

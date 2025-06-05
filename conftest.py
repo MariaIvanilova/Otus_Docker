@@ -50,6 +50,8 @@ def browser(request):
     headless = request.config.getoption("headless")
     browser_version = request.config.getoption("bv")
 
+    logger.info("===> Browser: %s, version: %s" % (browser_name, browser_version))
+
     vnc = request.config.getoption("vnc")
     executor = request.config.getoption("executor")
     executor_url = f"http://{executor}:4444/wd/hub"
