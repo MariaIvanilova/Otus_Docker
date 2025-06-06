@@ -36,6 +36,7 @@ def test_administration_add_new_product(browser, url):
 
 @allure.title("Тест удаление добавленного продукта")
 @pytest.mark.xfail
+@pytest.mark.dependency(depends=["test_administration_add_new_product"])
 @pytest.mark.order(2)
 def test_administration_delete_product(browser, url):
     administration_url = url + "/administration"
