@@ -34,7 +34,7 @@ RUN apt-get update && \
     firefox-esr \
     && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y --no-install-recommends netcat-traditional
+# RUN apt-get update && apt-get install -y --no-install-recommends netcat-traditional
 
 # Рабочая директория
 WORKDIR /app
@@ -43,6 +43,10 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
+
+
+# Создаем директории для отчетов
+RUN mkdir -p /app/allure-results && chmod 777 /app/allure-results
 
 # Копируем код
 COPY . .
