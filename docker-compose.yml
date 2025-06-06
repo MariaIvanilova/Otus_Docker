@@ -50,6 +50,8 @@ services:
       - THREADS=${THREADS:-1}
     command: >
       ./wait-for-it.sh opencart 8080
-      "python -m pytest --url $$OPENCART_URL --browser $$BROWSER --bv $$BROWSER_VERSION --executor $$EXECUTOR_URL -n $$THREADS --alluredir=/app/allure-results --clean-alluredir"
+      "python -m pytest --url $$OPENCART_URL --browser $$BROWSER --bv $$BROWSER_VERSION --executor $$EXECUTOR_URL -n $$THREADS --alluredir=/app/allure-results"
     depends_on:
       - opencart
+  volumes:
+    allure-results:
