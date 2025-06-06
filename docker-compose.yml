@@ -53,5 +53,3 @@ services:
       "python -m pytest --url $$OPENCART_URL --browser $$BROWSER --bv $$BROWSER_VERSION --executor $$EXECUTOR_URL -n $$THREADS --alluredir=/app/allure-results"
     depends_on:
       - opencart
-  volumes:
-    allure-results:
