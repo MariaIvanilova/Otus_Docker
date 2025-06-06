@@ -12,6 +12,7 @@ test_product = "Test"
 
 @allure.title("Тест добавление нового продукта")
 @pytest.mark.xfail
+@pytest.mark.dependency()
 @pytest.mark.order(1)
 def test_administration_add_new_product(browser, url):
     administration_url = url + "/administration"
