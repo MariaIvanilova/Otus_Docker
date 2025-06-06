@@ -45,9 +45,6 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 
-# Создаем директории для отчетов
-RUN mkdir -p /app/allure-results && chmod 777 /app/allure-results
-
 # Копируем код
 COPY . .
 
