@@ -1,36 +1,20 @@
 #!/bin/sh
+
 set -e
 
 host="$1"
 port="$2"
 shift 2
-cmd="$@"
+cmd="$*"
 
-# Таймаут в секундах (по умолчанию 60)
-timeout=60
-for arg in "$@"; do
-  case "$arg" in
-    --timeout=*)
-      timeout="${arg#*=}"
-      shift
-      ;;
-    --timeout)
-      timeout="$2"
-      shift 2
-      ;;
-  esac
-done
-
-end=$((SECONDS+timeout))
-
-while ! nc -z "$host" "$port"; do
-  if [ $SECONDS -ge $end ]; then
-    >&2 echo "Timeout reached waiting for $host:$port"
-    exit 1
-  fi
-  >&2 echo "Waiting for $host:$port..."
+# Wait for the port to become available
+until nc -z "$host" "$port"; do
+  >&2 echo "Waiting for $host:$port to become available..."
   sleep 1
 done
 
 >&2 echo "$host:$port is available, executing command: $cmd"
-exec $cmd
+# shellcheck disable=SC2086
+# exec $cmd
+# exec "$@"
+sh -c "$@"
