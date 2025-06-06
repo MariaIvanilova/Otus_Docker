@@ -48,7 +48,7 @@ networks:
 Запускаем opencart с помощью следующей команды и дожидаемся окончания его запуска:
 
 ```shell
-PHPADMIN_PORT=<FREE_PORT> OPENCART_PORT=<FREE_PORT> LOCAL_IP=<YOUR_IP> docker-compose -f docker-compose.yml up
+PHPADMIN_PORT=<FREE_PORT> OPENCART_PORT=<FREE_PORT> LOCAL_IP=<YOUR_IP> docker-compose -f docker-compose_old.yml up
 ```
 
 **Важно!** При запуске команды `docker-compose up` в переменных окружения `PHPADMIN_PORT` и `OPENCART_PORT` нужно 
