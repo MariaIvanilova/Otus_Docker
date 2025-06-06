@@ -41,7 +41,7 @@ services:
   tests:
     image: opencart-tests
     volumes:
-      - ./allure-results:/allure-results
+      - ./allure-results:/var/jenkins_home/workspace/Opencart_tests/allure-results
     environment:
       - OPENCART_URL=http://${LOCAL_IP}:${OPENCART_PORT}
       - BROWSER=${BROWSER:-chrome}
@@ -50,6 +50,6 @@ services:
       - THREADS=${THREADS:-1}
     command: >
       ./wait-for-it.sh opencart 8080
-      "python -m pytest --url $$OPENCART_URL --browser $$BROWSER --bv $$BROWSER_VERSION --executor $$EXECUTOR_URL -n $$THREADS --alluredir=/allure-results"
+      "python -m pytest --url $$OPENCART_URL --browser $$BROWSER --bv $$BROWSER_VERSION --executor $$EXECUTOR_URL -n $$THREADS --alluredir=/var/jenkins_home/workspace/Opencart_tests/allure-results"
     depends_on:
       - opencart
